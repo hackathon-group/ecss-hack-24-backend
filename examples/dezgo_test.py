@@ -2,6 +2,7 @@ import requests
 from PIL import Image
 #from requests.auth
 import io
+import os
 
 
 base_url = "https://api.dezgo.com/"
@@ -10,6 +11,12 @@ apiKey = "DEZGO-8DEA54D0009423549AE813CAFA6A37A3C606909DB4AD84013F645050051F4BDA
 
 headers = {
     "accept": "text/plain",
+            "X-Dezgo-Key": apiKey # type: ignore
+}
+
+image2imageHeaders = {
+    "accept": "*/*",
+    #"Content-Type": "application/json",
     "X-Dezgo-Key": apiKey # type: ignore
 }
 
@@ -31,11 +38,6 @@ def getAccountInfo():
         print(response.json())
     else:
         print("Error: Code " + str(response.status_code))
-
-
-
-def generateImageFromTextAndImage():
-    print("generateImageFromTextAndImage function run")
 
 
 def generateImageFromText():
@@ -65,6 +67,37 @@ def generateImageFromText():
 
 
 
+def generateImageFromTextAndImage():
+    getGenerateImageFromTextAndImage = "image2image"
+
+    prompt = "cat in a swimming cap"
+
+    model = "absolute_reality_1"
+
+    inputImageName = "image.png"
+
+    #inputSplit = inputImageName.split('.')
+
+
+
+    files = {
+        "prompt": prompt,
+        "init_image": (inputImageName, open(inputImageName, 'rb'), 'image/png'),
+        "model": model
+    }
+
+
+    response = requests.post(base_url+getGenerateImageFromTextAndImage, headers=image2imageHeaders, files=files)
+
+    if (response.status_code == 200):
+        print("Successful request")
+        print("Data:")
+        im = Image.open(io.BytesIO(response.content))
+        im.show()
+        im.save("imagefromtextandimage.png")
+    else:
+        print("Error: Code " + str(response.status_code))
+
 
 
 
@@ -80,7 +113,7 @@ def generateImageFromText():
 ################################## Run Functions Below ############################
         
 #getAccountInfo()
+#generateImageFromText()
         
-
-generateImageFromText()
+generateImageFromTextAndImage()
 
