@@ -1,7 +1,7 @@
 from vinted_scraper import VintedScraper
 
 def vintedQuery(query):
-    scraper = VintedScraper("https://www.vinted.com")  # Init the scraper with the baseurl
+    scraper = VintedScraper("https://www.vinted.co.uk")  # Init the scraper with the baseurl
     params = {
         "search_text": query
         # Add other query parameters like the pagination and so on
@@ -14,12 +14,13 @@ def vintedQuery(query):
         itemSize = item.size_title
         itemImage = item.photo.full_size_url
         itemURL = item.url
-        itemInfoList.extend([itemName, itemPrice, itemSize, itemImage, itemURL])
+        itemInfoList.append([itemName, itemPrice, itemSize, itemImage, itemURL])
+    print(itemInfoList)
    # scraper.item(item.id) # get more info about a particular item
 
 
 if __name__ == "__main__":
-    vintedQuery("black shirt with dots")
+    vintedQuery("olive green jumper")
 
 
 # RESPONSE EXAMPLE
