@@ -1,4 +1,4 @@
-from vinted import get_vinted_products
+from src.vinted import get_vinted_products
 import requests
 
 def gpt_query(item_name, img_link):
@@ -38,6 +38,7 @@ def gpt_query(item_name, img_link):
     r = response.json()
     print(r)
     print(r["choices"][0]["message"]["content"])
+
 
 if __name__ == "__main__":
     item = get_vinted_products("olive green jumper")[0]

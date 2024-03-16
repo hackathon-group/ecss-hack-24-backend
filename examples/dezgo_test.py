@@ -68,7 +68,7 @@ def generateImageFromText():
 def generateImageFromTextAndImage():
     getGenerateImageFromTextAndImage = "image2image"
 
-    prompt = "make person wear a red baseball hat"
+    prompt = "The olive green jumper is a fleece pullover with a half-zip fastening at the front. It has a stand-up collar and features an elastic drawcord hem at the bottom. There is a logo patch on the left chest."
 
     model = "realistic_vision_1_3"
     #"realdream_12"
@@ -91,9 +91,9 @@ def generateImageFromTextAndImage():
         "prompt": prompt,
         "init_image": (inputImageName, open(inputImageName, 'rb'), inputSplit[0]+'/'+inputSplit[1]),
         "model": model,
-        "strength": "0.444",
-        "negative_prompt": "blurry, different background, change the face",
-        "guidance": "20",
+        "strength": "0.5",
+        "negative_prompt": "blurry, different background, change the face, detailed background, hat",
+        "guidance": "10",
         "steps": "150"
     }
 
