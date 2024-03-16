@@ -68,9 +68,16 @@ def generateImageFromText():
 def generateImageFromTextAndImage():
     getGenerateImageFromTextAndImage = "image2image"
 
-    prompt = "no change to the image"
+    prompt = "make person wear a red baseball hat"
 
-    model = "furrytoonmix"
+    model = "realistic_vision_1_3"
+    #"realdream_12"
+    #"foto_assisted_diffusion"
+    #"analog_diffusion"
+    #"absolute_reality_1_8_1"
+    #"realistic_vision_5_1"
+    #"realdream_12"
+    #"furrytoonmix"
     #"cyberrealistic_3_3"
     #"anything_5_0"
 
@@ -84,7 +91,10 @@ def generateImageFromTextAndImage():
         "prompt": prompt,
         "init_image": (inputImageName, open(inputImageName, 'rb'), inputSplit[0]+'/'+inputSplit[1]),
         "model": model,
-        "strength": "0.1"
+        "strength": "0.444",
+        "negative_prompt": "blurry, different background, change the face",
+        "guidance": "20",
+        "steps": "150"
     }
 
 
