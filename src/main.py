@@ -1,15 +1,37 @@
-from typing import Union
+from typing import List, Union
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
 from fastapi import UploadFile, File
 
+from src.vinted import VintedProduct, get_vinted_products
+
 STORAGE_PATH = os.getenv('STORAGE_PATH', 'data')
 
 app = FastAPI()
+app.mount("/images", StaticFiles(directory=f"{STORAGE_PATH}"), name="images")
 
 class Message(BaseModel):
     name: str
+
+class ProductRequest(BaseModel):
+    product_query: str
+
+class ProductWithPortrait(BaseModel):
+    product: VintedProduct
+    portrait_url: str
+
+
+# class Product(BaseModel):
+#     name: str
+#     price: str
+#     size: str
+#     image: str
+#     url: str
+    
+
+
 
 @app.get("/")
 def read_root():
@@ -28,6 +50,25 @@ async def upload_portrait(session_id: str, portrait: UploadFile = File(...)):
     return {
         'success': True
     }
+
+@app.post("/get_products/{session_id}")
+async def get_products(session_id: str, request: ProductRequest):
+    file_path = os.path.join(STORAGE_PATH, session_id, 'portrait.jpg')
+    product_query = request.product_query
+    print(f'Processing product query: {product_query}...')
+
+    products = get_vinted_products(product_query)
+
+    # TODO Use GPT4V to get a detailed description of each product
+
+    # TODO Use a (Text + Image -> Image) model to overlay each product on to the portrait
+    
+    result: List[ProductWithPortrait] = []
+
+    return {
+        'products': result
+    }
+
 
 if __name__ == "app.main":
     print('Starting FastAPI server...')

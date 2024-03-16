@@ -1,6 +1,14 @@
+from pydantic import BaseModel
 from vinted_scraper import VintedScraper
 
-def vintedQuery(query):
+class VintedProduct(BaseModel):
+    name: str
+    price: str
+    size: str
+    image: str
+    url: str
+
+def get_vinted_products(query) -> list[VintedProduct]:
     scraper = VintedScraper("https://www.vinted.co.uk")  # Init the scraper with the baseurl
     params = {
         "search_text": query
@@ -14,13 +22,14 @@ def vintedQuery(query):
         itemSize = item.size_title
         itemImage = item.photo.full_size_url
         itemURL = item.url
-        itemInfoList.append([itemName, itemPrice, itemSize, itemImage, itemURL])
+        itemInfoList.append(VintedProduct(name=itemName, price=itemPrice, size=itemSize, image=itemImage, url=itemURL))
+    return itemInfoList
     print(itemInfoList)
    # scraper.item(item.id) # get more info about a particular item
 
 
 if __name__ == "__main__":
-    vintedQuery("olive green jumper")
+    get_vinted_products("olive green jumper")
 
 
 # RESPONSE EXAMPLE
