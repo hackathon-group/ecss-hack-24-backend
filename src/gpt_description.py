@@ -1,21 +1,23 @@
 from vinted import get_vinted_products
 import requests
 
-def gpt_query(img_link):
+def gpt_query(item_name, img_link):
     api_key = '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'
+
+    description_item = "Describe the " + str(item_name)
 
     payload =  {"model": "gpt-4-vision-preview",
         "messages": [
         {"role": "system",
         "content": [{"type": "text",
-                    "text": "You are a british stylist.  Your goal is to describe the clothing item in this image in less than 100 words."}],
+                    "text": "Your goal is to solely describe the item specified in this image in less than 100 words. Don't mention anything else, no background, no other items in the image, just the item mentioned in the prompt."}],
         },
         {
             "role": "user",
             "content": [
             {
                 "type": "text",
-                "text": "What clothing item is in the image?"
+                "text": description_item
             },
             {
                 "type": "image_url",
@@ -38,5 +40,7 @@ def gpt_query(img_link):
     print(r["choices"][0]["message"]["content"])
 
 if __name__ == "__main__":
-    link_img = get_vinted_products("olive green jumper")[0].image
-    gpt_query(link_img)
+    item = get_vinted_products("olive green jumper")[0]
+    item_name = item.name
+    link_img = item.image
+    gpt_query(item_name, link_img)
