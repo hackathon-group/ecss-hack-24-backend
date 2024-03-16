@@ -1,24 +1,28 @@
 from vinted_scraper import VintedScraper
 
-def main():
-    scraper = VintedScraper("https://www.vinted.com")  # init the scraper with the baseurl
+def vintedQuery(query):
+    scraper = VintedScraper("https://www.vinted.com")  # Init the scraper with the baseurl
     params = {
-        "search_text": "board games"
+        "search_text": query
         # Add other query parameters like the pagination and so on
     }
-    items = scraper.search(params)  # get all the items
-    item = items[0]  # get the first Item of the list
-    print(item)
-    scraper.item(item.id)  # get more info about a particular item
+    items = scraper.search(params)  # Get all the items
+    itemInfoList = []
+    for item in items: # Get item details
+        itemName = item.title
+        itemPrice = str(item.total_item_price) + " " + item.currency
+        itemSize = item.size_title
+        itemImage = item.photo.full_size_url
+        itemURL = item.url
+        itemInfoList.extend([itemName, itemPrice, itemSize, itemImage, itemURL])
+   # scraper.item(item.id) # get more info about a particular item
 
 
 if __name__ == "__main__":
-    main()
+    vintedQuery("black shirt with dots")
 
 
-# RESPONSE
-    
-
+# RESPONSE EXAMPLE
 '''
 VintedItem(
     id=4223919090,
@@ -43,143 +47,6 @@ VintedItem(
         is_favourite=None,
     ),
     is_for_swap=False,
-    user=VintedUser(
-        id=79666559,
-        login="strest0ut",
-        business=False,
-        profile_url="https://www.vinted.com/member/79666559-strest0ut",
-        photo=VintedImage(
-            id=124201852,
-            width=507,
-            height=800,
-            temp_uuid=None,
-            url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/f800/1673286355.jpeg?s=e56b87b63bea722ba5f6ed085d0824081cab1a1b",
-            dominant_color="#31abc2",
-            dominant_color_opaque="#C1E6ED",
-            thumbnails=[
-                VintedMedia(
-                    type="thumb310",
-                    url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/310x310/1673286355.jpeg?s=ed22f8aedc03783971ff46a200a874f392aaa3db",
-                    width=310,
-                    height=310,
-                    original_size=None,
-                ),
-                VintedMedia(
-                    type="thumb150",
-                    url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/150x150/1673286355.jpeg?s=0ce378eaf3ad7caf8206bf27f36369a9272a0205",
-                    width=150,
-                    height=150,
-                    original_size=None,
-                ),
-                VintedMedia(
-                    type="thumb100",
-                    url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/100x100/1673286355.jpeg?s=78342738d5b8e50588ba9a21d3b387d0cb4adc4b",
-                    width=100,
-                    height=100,
-                    original_size=None,
-                ),
-                VintedMedia(
-                    type="thumb50",
-                    url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/50x50/1673286355.jpeg?s=60776a344fd7ca57db4d6ca990fa32050c85ff8a",
-                    width=50,
-                    height=50,
-                    original_size=None,
-                ),
-                VintedMedia(
-                    type="thumb20",
-                    url="https://images1.vinted.net/t/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/20x20/1673286355.jpeg?s=5af5f6acd8ccc66f25583891f766edab6c539cc2",
-                    width=20,
-                    height=20,
-                    original_size=None,
-                ),
-            ],
-            is_suspicious=False,
-            orientation=None,
-            high_resolution=VintedHighResolution(
-                id="01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq",
-                timestamp=1673286355,
-                orientation=None,
-            ),
-            full_size_url="https://images1.vinted.net/tc/01_0122f_AYCkVyWfHoWGRZsPpQi1uEGq/1673286355.jpeg?s=5c182f5e658abec280cb83e3e7c665740a6ca17a",
-            is_hidden=False,
-            image_no=None,
-            is_main=None,
-        ),
-        anon_id=None,
-        real_name=None,
-        email=None,
-        birthday=None,
-        gender=None,
-        item_count=None,
-        msg_template_count=None,
-        given_item_count=None,
-        taken_item_count=None,
-        favourite_topic_count=None,
-        forum_msg_count=None,
-        forum_topic_count=None,
-        followers_count=None,
-        following_count=None,
-        following_brands_count=None,
-        positive_feedback_count=None,
-        neutral_feedback_count=None,
-        negative_feedback_count=None,
-        meeting_transaction_count=None,
-        account_status=None,
-        email_bounces=None,
-        feedback_reputation=None,
-        feedback_count=None,
-        account_ban_date=None,
-        is_account_ban_permanent=None,
-        is_forum_ban_permanent=None,
-        is_on_holiday=None,
-        is_publish_photos_agreed=None,
-        expose_location=None,
-        third_party_tracking=None,
-        default_address=None,
-        last_loged_on_ts=None,
-        city_id=None,
-        city=None,
-        country_id=None,
-        country_code=None,
-        country_iso_code=None,
-        country_title=None,
-        contacts_permission=None,
-        contacts=None,
-        path=None,
-        moderator=None,
-        is_catalog_moderator=None,
-        is_catalog_role_marketing_photos=None,
-        hide_feedback=None,
-        can_post_big_forum_photos=None,
-        allow_direct_messaging=None,
-        bundle_discount=None,
-        donation_configuration=None,
-        fundraiser=None,
-        has_ship_fast_badge=None,
-        total_items_count=None,
-        about=None,
-        verification=None,
-        closet_promoted_until=None,
-        avg_response_time=None,
-        carrier_ids=None,
-        carriers_without_custom_ids=None,
-        locale=None,
-        updated_on=None,
-        is_hated=None,
-        hates_you=None,
-        is_favourite=None,
-        share_profile_url=None,
-        facebook_user_id=None,
-        is_online=None,
-        has_promoted_closet=None,
-        can_view_profile=None,
-        can_bundle=None,
-        country_title_local=None,
-        last_loged_on=None,
-        accepted_pay_in_methods=None,
-        localization=None,
-        is_bpf_price_prominence_applied=None,
-    ),
     url="https://www.vinted.com/items/4223919090-operation-buzz-lightyear",
     promoted=False,
     photos=[
