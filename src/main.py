@@ -6,13 +6,20 @@ import os
 from fastapi import UploadFile, File
 import uuid
 from src.gpt_description import gpt_query
-
 from src.vinted import VintedProduct, get_vinted_products
+from fastapi.middleware.cors import CORSMiddleware
 
 STORAGE_PATH = os.getenv('STORAGE_PATH', 'data')
 
 app = FastAPI()
 app.mount("/images", StaticFiles(directory=f"{STORAGE_PATH}"), name="images")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False, # Must be False when allow_origins is ["*"]
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Message(BaseModel):
     name: str
