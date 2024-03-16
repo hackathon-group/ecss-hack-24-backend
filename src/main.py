@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
 from fastapi import UploadFile, File
+import uuid
 
 from src.vinted import VintedProduct, get_vinted_products
 
@@ -21,6 +22,11 @@ class ProductRequest(BaseModel):
 class ProductWithPortrait(BaseModel):
     product: VintedProduct
     portrait_url: str
+    description: str
+
+class ProductWithDescription(BaseModel):
+    product: VintedProduct
+    description: str
 
 
 # class Product(BaseModel):
@@ -51,19 +57,57 @@ async def upload_portrait(session_id: str, portrait: UploadFile = File(...)):
         'success': True
     }
 
-@app.post("/get_products/{session_id}")
-async def get_products(session_id: str, request: ProductRequest):
-    file_path = os.path.join(STORAGE_PATH, session_id, 'portrait.jpg')
-    product_query = request.product_query
+async def get_product_description(product: VintedProduct) -> str:
+    # TODO Use GPT4V to get a detailed description of each product
+    return 'A beautiful ' + product.name
+
+# ProductWithDescription -> ProductWithPortrait
+async def get_product_with_portrait(session_id: str, product: ProductWithDescription) -> ProductWithPortrait:
+    # Write the image to STORAGE_PATH/session_id/<random_uuid>.jpg 
+    # The public facing URL will be /images/session_id/<random_uuid>.jpg
+    rand_uuid = uuid.uuid4()
+    file_path = os.path.join(STORAGE_PATH, session_id, f'{rand_uuid}.jpg')
+    portrait_url = f'/images/{session_id}/{rand_uuid}.jpg'
+
+    description = product.description
+    portrait = open(os.path.join(STORAGE_PATH, session_id, 'portrait.jpg'), 'rb').read()
+    # TODO Use a (Text + Image -> Image) model to overlay each product on to the portrait
+    
+    result = portrait # will be the result of the model
+    with open(file_path, 'wb') as temp_: 
+        temp_.write(result)
+
+    return ProductWithPortrait(
+        product=product.product,
+        portrait_url=portrait_url,
+        description=product.description
+    )
+
+@app.get("/get_products/{session_id}/")
+async def get_products(session_id: str, product_query: str):
     print(f'Processing product query: {product_query}...')
 
     products = get_vinted_products(product_query)
+    # Limit to first 5 products
+    products = products[:5]
 
-    # TODO Use GPT4V to get a detailed description of each product
+    products_with_description: List[ProductWithDescription] = []
+    for product in products:
+        description = ''
+        try:
+            description = await get_product_description(product)
+        except Exception as e:
+            print(f'Error getting product description for {product.name}: {e}')
+            description = product.name
+        products_with_description.append(ProductWithDescription(product=product, description=description))
 
-    # TODO Use a (Text + Image -> Image) model to overlay each product on to the portrait
-    
     result: List[ProductWithPortrait] = []
+    for product_with_description in products_with_description:
+        try:
+            product_with_portrait = await get_product_with_portrait(session_id, product_with_description)
+            result.append(product_with_portrait)
+        except Exception as e:
+            print(f'Error getting product portrait for {product_with_description.product.name}: {e}')
 
     return {
         'products': result
