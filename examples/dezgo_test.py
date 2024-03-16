@@ -1,8 +1,6 @@
 import requests
 from PIL import Image
-#from requests.auth
 import io
-import os
 
 
 base_url = "https://api.dezgo.com/"
@@ -70,9 +68,11 @@ def generateImageFromText():
 def generateImageFromTextAndImage():
     getGenerateImageFromTextAndImage = "image2image"
 
-    prompt = "add a fedora hat to this person"
+    prompt = "no change to the image"
 
-    model = "absolute_reality_1"
+    model = "furrytoonmix"
+    #"cyberrealistic_3_3"
+    #"anything_5_0"
 
     inputImageName = "Picture1.png"
 
@@ -83,7 +83,8 @@ def generateImageFromTextAndImage():
     files = {
         "prompt": prompt,
         "init_image": (inputImageName, open(inputImageName, 'rb'), inputSplit[0]+'/'+inputSplit[1]),
-        "model": model
+        "model": model,
+        "strength": "0.1"
     }
 
 
@@ -97,12 +98,6 @@ def generateImageFromTextAndImage():
         im.save("imagefromtextandimage2.png")
     else:
         print("Error: Code " + str(response.status_code))
-
-
-
-
-
-
 
 
 
