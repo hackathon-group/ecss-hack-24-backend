@@ -5,6 +5,7 @@ from pydantic import BaseModel
 import os
 from fastapi import UploadFile, File
 import uuid
+from src.gpt_description import gpt_query
 
 from src.vinted import VintedProduct, get_vinted_products
 
@@ -59,7 +60,8 @@ async def upload_portrait(session_id: str, portrait: UploadFile = File(...)):
 
 async def get_product_description(product: VintedProduct) -> str:
     # TODO Use GPT4V to get a detailed description of each product
-    return 'A beautiful ' + product.name
+    description = gpt_query(product.url)
+    return description
 
 # ProductWithDescription -> ProductWithPortrait
 async def get_product_with_portrait(session_id: str, product: ProductWithDescription) -> ProductWithPortrait:
