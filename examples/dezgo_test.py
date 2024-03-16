@@ -70,19 +70,19 @@ def generateImageFromText():
 def generateImageFromTextAndImage():
     getGenerateImageFromTextAndImage = "image2image"
 
-    prompt = "cat in a swimming cap"
+    prompt = "add a fedora hat to this person"
 
     model = "absolute_reality_1"
 
-    inputImageName = "image.png"
+    inputImageName = "Picture1.png"
 
-    #inputSplit = inputImageName.split('.')
+    inputSplit = inputImageName.split('.')
 
 
 
     files = {
         "prompt": prompt,
-        "init_image": (inputImageName, open(inputImageName, 'rb'), 'image/png'),
+        "init_image": (inputImageName, open(inputImageName, 'rb'), inputSplit[0]+'/'+inputSplit[1]),
         "model": model
     }
 
@@ -94,7 +94,7 @@ def generateImageFromTextAndImage():
         print("Data:")
         im = Image.open(io.BytesIO(response.content))
         im.show()
-        im.save("imagefromtextandimage.png")
+        im.save("imagefromtextandimage2.png")
     else:
         print("Error: Code " + str(response.status_code))
 
