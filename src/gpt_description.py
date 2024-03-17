@@ -1,4 +1,4 @@
-from vinted import get_vinted_products
+from src.vinted import get_vinted_products
 import requests
 
 API_KEY = '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'
