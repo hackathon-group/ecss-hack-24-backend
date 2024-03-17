@@ -6,8 +6,10 @@ import os
 from fastapi import UploadFile, File
 import uuid
 from src.gpt_description import gpt_query
+from src.image_fusion import image_fusion_replicate
 from src.vinted import VintedProduct, get_vinted_products
 from fastapi.middleware.cors import CORSMiddleware
+
 
 STORAGE_PATH = os.getenv('STORAGE_PATH', 'data')
 
@@ -70,6 +72,7 @@ async def get_product_description(product: VintedProduct) -> str:
     description = gpt_query(product.url)
     return description
 
+
 # ProductWithDescription -> ProductWithPortrait
 async def get_product_with_portrait(session_id: str, product: ProductWithDescription) -> ProductWithPortrait:
     # Write the image to STORAGE_PATH/session_id/<random_uuid>.jpg 
@@ -80,7 +83,7 @@ async def get_product_with_portrait(session_id: str, product: ProductWithDescrip
 
     description = product.description
     portrait = open(os.path.join(STORAGE_PATH, session_id, 'portrait.jpg'), 'rb').read()
-    # TODO Use a (Text + Image -> Image) model to overlay each product on to the portrait
+    final_url = image_fusion_replicate(portrait_url, product.product.image)
     
     result = portrait # will be the result of the model
     with open(file_path, 'wb') as temp_: 
@@ -88,7 +91,7 @@ async def get_product_with_portrait(session_id: str, product: ProductWithDescrip
 
     return ProductWithPortrait(
         product=product.product,
-        portrait_url=portrait_url,
+        portrait_url=final_url,
         description=product.description
     )
 
