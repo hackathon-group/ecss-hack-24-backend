@@ -1,6 +1,8 @@
 import requests
 import io
 from openai import OpenAI
+from fastapi import UploadFile, File
+
 
 APIKEY = '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'
 client = OpenAI(api_key=APIKEY)
@@ -12,6 +14,15 @@ transcription = client.audio.transcriptions.create(
   response_format="text"
 )
 print(transcription)
+
+def speechFileToText(file: UploadFile):
+  bytes = file.file.read()
+  transcription = client.audio.transcriptions.create(
+        model="whisper-1", 
+        file=bytes,
+        response_format="text"
+        )
+  return transcription
 
 def speech2text(audio_url):
 

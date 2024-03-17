@@ -7,7 +7,7 @@ from fastapi import UploadFile, File
 import uuid
 from src.gpt_description import gpt_query
 from src.image_fusion import image_fusion_replicate
-from src.speech_text import speech2text
+from src.speech_text import speech2text, speechFileToText
 from src.vinted import VintedProduct, get_vinted_products
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -66,7 +66,7 @@ async def upload_portrait(session_id: str, transcript: UploadFile = File(...)):
         buffer.write(transcript.file.read())
     return {
         'success': True,
-        'transcript': speech2text(transcript)
+        'transcript': speechFileToText(transcript)
     }
 
 async def get_product_description(product: VintedProduct) -> str:
