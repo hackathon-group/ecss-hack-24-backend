@@ -15,11 +15,14 @@ transcription = client.audio.transcriptions.create(
 )
 print(transcription)
 
-def speechFileToText(file: UploadFile):
-  bytes = file.file.read()
+async def speechFileToText(file: UploadFile):
+  # bytes = file.file
+  audio = await file.read()
+  buffer = io.BytesIO(audio)
+  buffer.name = 'audio.m4a'
   transcription = client.audio.transcriptions.create(
-        model="whisper-1", 
-        file=bytes,
+        model="whisper-1",
+        file=buffer,
         response_format="text"
         )
   return transcription

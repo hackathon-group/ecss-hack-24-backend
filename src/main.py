@@ -66,7 +66,7 @@ async def upload_portrait(session_id: str, transcript: UploadFile = File(...)):
         buffer.write(transcript.file.read())
     return {
         'success': True,
-        'transcript': speechFileToText(transcript)
+        'transcript': await speechFileToText(transcript)
     }
 
 async def get_product_description(product: VintedProduct) -> str:
