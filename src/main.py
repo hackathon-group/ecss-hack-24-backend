@@ -7,6 +7,7 @@ from fastapi import UploadFile, File
 import uuid
 from src.gpt_description import gpt_query
 from src.image_fusion import image_fusion_replicate
+from src.speech_text import speech2text
 from src.vinted import VintedProduct, get_vinted_products
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -58,13 +59,14 @@ def hello_world(message):
     return {"result": f'Hello, {message.name}!'}
 
 @app.post("/upload_portrait/{session_id}")
-async def upload_portrait(session_id: str, portrait: UploadFile = File(...)):
-    file_path = os.path.join(STORAGE_PATH, session_id, 'portrait.jpg')
+async def upload_portrait(session_id: str, transcript: UploadFile = File(...)):
+    file_path = os.path.join(STORAGE_PATH, session_id, 'transcript.mp3')
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "wb") as buffer:
-        buffer.write(portrait.file.read())
+        buffer.write(transcript.file.read())
     return {
-        'success': True
+        'success': True,
+        'transcript': speech2text(transcript)
     }
 
 async def get_product_description(product: VintedProduct) -> str:
