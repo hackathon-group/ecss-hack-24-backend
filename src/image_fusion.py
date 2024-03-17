@@ -21,7 +21,7 @@ def image_fusion_replicate(portrait_url: str, product_url: str) -> str:
 
 
 if __name__ == "__main__":
-    image_fusion(
+    image_fusion_replicate(
         'https://ecss-hack-24-backend.onrender.com/images/2d74f900-f500-4fdf-b412-57a5b243fca3/portrait.jpg',
         'https://images1.vinted.net/t/03_00af4_AwCktTj9sGd2dkrqbEnpMWGz/f800/1710627962.jpeg?s=639f08db24be1b29f28e3a3b5724dd4adb9f2044'
     )

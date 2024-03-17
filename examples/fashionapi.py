@@ -13,13 +13,13 @@ inputSplit = inputImageName.split('.')
 
 payload = json.dumps({
   "key": "qg5Wa8DsHDs4Whc23kE9Al90UhhyEJPkcnLgQQsPRuFJAw3ShmOIBnkTEy1Y",
-  "prompt": "A realistic photo of a model wearing a beautiful white top.",
+  "prompt": "A realistic photo of a model wearing a football shirt.",
   "negative_prompt": "Low quality, unrealistic, bad cloth, warped cloth",
-  "init_image": "https://ecss-hack-24-backend.onrender.com/images/2d74f900-f500-4fdf-b412-57a5b243fca3/portrait.jpg",
-  "cloth_image": "https://thumbs.dreamstime.com/b/plain-hollow-female-tank-top-shirt-isolated-white-background-30020169.jpg",
-  "cloth_type": "dress",
-  "height": 512,
-  "width": 384,
+  "init_image": "https://i2-prod.mirror.co.uk/incoming/article27248367.ece/ALTERNATES/n615/0_Screenshot-2022-06-09-at-093256.jpg",
+  "cloth_image": "https://m.media-amazon.com/images/I/61A9pfQot5L._AC_SX569_.jpg",
+  "cloth_type": "upper-body",
+  "height": 615,
+  "width": 345,
   "guidance_scale": 8,
   "num_inference_steps": 20,
   "seed": 128915590,
@@ -38,8 +38,6 @@ if (response.status_code == 200):
     print("Successful request")
     print("Data:")
     
-    #im = Image.open(io.BytesIO(response.content))
-    #im.show()
     response = response.json()
 
     print(response)
@@ -54,3 +52,4 @@ if (response.status_code == 200):
     img.save("imagefromtextandimage3.png")
 else:
     print("Error: Code " + str(response.status_code))
+
