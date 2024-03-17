@@ -4,8 +4,7 @@ from openai import OpenAI
 from fastapi import UploadFile, File
 
 
-APIKEY = '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'
-client = OpenAI(api_key=APIKEY)
+client = OpenAI()
 
 audio_file = open("green_jumper.m4a", "rb")
 transcription = client.audio.transcriptions.create(

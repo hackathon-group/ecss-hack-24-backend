@@ -1,7 +1,8 @@
 from src.vinted import get_vinted_products
 import requests
+import os
 
-API_KEY = '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'
+API_KEY = os.getenv('OPENAI_API_KEY')
 
 def gpt_query(item_name, img_link):
 
