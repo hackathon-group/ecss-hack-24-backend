@@ -77,6 +77,13 @@ async def get_product_description(product: VintedProduct) -> str:
 
 # ProductWithDescription -> ProductWithPortrait
 async def get_product_with_portrait(session_id: str, product: ProductWithDescription) -> ProductWithPortrait:
+    return ProductWithPortrait(
+        product=product.product,
+        portrait_url='',
+        description=product.description
+    ) 
+
+
     # Write the image to STORAGE_PATH/session_id/<random_uuid>.jpg 
     # The public facing URL will be /images/session_id/<random_uuid>.jpg
     rand_uuid = uuid.uuid4()
