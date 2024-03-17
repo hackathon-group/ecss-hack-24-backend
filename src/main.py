@@ -71,7 +71,7 @@ async def upload_portrait(session_id: str, transcript: UploadFile = File(...)):
 
 async def get_product_description(product: VintedProduct) -> str:
     # TODO Use GPT4V to get a detailed description of each product
-    description = gpt_query(product.name, product.url)
+    description = gpt_query(product.name, product.image)
     return description
 
 

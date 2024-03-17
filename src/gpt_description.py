@@ -1,4 +1,4 @@
-from src.vinted import get_vinted_products
+from vinted import get_vinted_products
 import requests
 
 API_KEY = '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'
@@ -38,11 +38,13 @@ def gpt_query(item_name, img_link):
     response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=payload)
     r = response.json()
     print(r)
-    print(r["choices"][0]["message"]["content"])
+    result = r["choices"][0]["message"]["content"]
+    print(result)
+    return result
 
 
 if __name__ == "__main__":
-    item = get_vinted_products("olive green jumper")[0]
+    item = get_vinted_products("red hat")[0]
     item_name = item.name
     link_img = item.image
     gpt_query(item_name, link_img)
