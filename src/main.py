@@ -83,7 +83,11 @@ async def get_product_with_portrait(session_id: str, product: ProductWithDescrip
 
     description = product.description
     portrait = open(os.path.join(STORAGE_PATH, session_id, 'portrait.jpg'), 'rb').read()
-    final_url = image_fusion_replicate(portrait_url, product.product.image)
+    root = 'https://ecss-hack-24-backend.onrender.com'
+    final_url = image_fusion_replicate(
+        root + portrait_url, 
+        product.product.image
+    )
     
     result = portrait # will be the result of the model
     with open(file_path, 'wb') as temp_: 
