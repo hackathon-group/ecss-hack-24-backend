@@ -1,8 +1,9 @@
 from src.vinted import get_vinted_products
 import requests
 
+API_KEY = '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'
+
 def gpt_query(item_name, img_link):
-    api_key = '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'
 
     description_item = "Describe the " + str(item_name)
 
@@ -31,7 +32,7 @@ def gpt_query(item_name, img_link):
         "max_tokens": 500
     }
 
-    headers = {"Authorization": f"Bearer {api_key}",
+    headers = {"Authorization": f"Bearer {API_KEY}",
             "Content-Type": "application/json"}
     
     response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=payload)
